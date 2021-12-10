@@ -111,8 +111,7 @@ namespace EnumerableExtensionsTask.Tests
         }
 
         [TestCaseSource(nameof(TestCasesSource))]
-        public void Select_With_String_Sequence(IEnumerable<string> source, IEnumerable<string> expected, Func<string, string> selector) =>
-            CollectionAssert.AreEqual(expected, source.Select(selector));
+        public void Select_With_String_Sequence(IEnumerable<string> source, IEnumerable<string> expected, Func<string, string> selector) => CollectionAssert.AreEqual(expected, source.Select(selector));
 
         [Test]
         public void Where_After_Add_New_Element_To_Source_Sequence_Actual_Result()

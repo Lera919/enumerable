@@ -229,7 +229,6 @@ namespace EnumerableExtensionsTask
         /// <returns>An IOrderedEnumerable whose elements are sorted according to a key.</returns>
         public static IEnumerable<TSource> OrderBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> key)
         {
-            Comparer<TKey> comparer = Comparer<TKey>.Default;
             if (source is null)
             {
                 throw new ArgumentNullException(nameof(source));
