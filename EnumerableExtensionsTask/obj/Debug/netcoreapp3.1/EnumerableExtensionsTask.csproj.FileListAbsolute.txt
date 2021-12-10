@@ -1,0 +1,10 @@
+D:\Epam\enumerable-extensions\EnumerableExtensionsTask\bin\Debug\netcoreapp3.1\EnumerableExtensionsTask.deps.json
+D:\Epam\enumerable-extensions\EnumerableExtensionsTask\bin\Debug\netcoreapp3.1\EnumerableExtensionsTask.dll
+D:\Epam\enumerable-extensions\EnumerableExtensionsTask\bin\Debug\netcoreapp3.1\EnumerableExtensionsTask.pdb
+D:\Epam\enumerable-extensions\EnumerableExtensionsTask\obj\Debug\netcoreapp3.1\EnumerableExtensionsTask.csproj.AssemblyReference.cache
+D:\Epam\enumerable-extensions\EnumerableExtensionsTask\obj\Debug\netcoreapp3.1\EnumerableExtensionsTask.GeneratedMSBuildEditorConfig.editorconfig
+D:\Epam\enumerable-extensions\EnumerableExtensionsTask\obj\Debug\netcoreapp3.1\EnumerableExtensionsTask.AssemblyInfoInputs.cache
+D:\Epam\enumerable-extensions\EnumerableExtensionsTask\obj\Debug\netcoreapp3.1\EnumerableExtensionsTask.AssemblyInfo.cs
+D:\Epam\enumerable-extensions\EnumerableExtensionsTask\obj\Debug\netcoreapp3.1\EnumerableExtensionsTask.csproj.CoreCompileInputs.cache
+D:\Epam\enumerable-extensions\EnumerableExtensionsTask\obj\Debug\netcoreapp3.1\EnumerableExtensionsTask.dll
+D:\Epam\enumerable-extensions\EnumerableExtensionsTask\obj\Debug\netcoreapp3.1\EnumerableExtensionsTask.pdb

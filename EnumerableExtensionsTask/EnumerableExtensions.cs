@@ -23,8 +23,29 @@ namespace EnumerableExtensionsTask
         /// <exception cref="ArgumentNullException">Thrown when source sequence or predicate is null.</exception>
         public static IEnumerable<TSource> Where<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
         {
-            throw new NotImplementedException();
-        }
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            if (predicate is null)
+            {
+                throw new ArgumentNullException(nameof(predicate));
+            }
+
+            return WhereIterator(source, predicate);
+
+            static IEnumerable<TSource> WhereIterator(IEnumerable<TSource> source, Func<TSource, bool> predicate)
+            {
+                foreach (var element in source)
+                {
+                    if (predicate(element))
+                    {
+                        yield return element;
+                    }
+                }
+            }
+    }
 
         /// <summary>
         /// Transforms each element of source sequence from one type to another type by some rule.
@@ -37,7 +58,25 @@ namespace EnumerableExtensionsTask
         /// <exception cref="ArgumentNullException">Thrown when sequence or transformer is null.</exception>
         public static IEnumerable<TResult> Select<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
         {
-            throw new NotImplementedException();
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            if (selector is null)
+            {
+                throw new ArgumentNullException(nameof(selector));
+            }
+
+            return WhereIterator(source, selector);
+
+            static IEnumerable<TResult> WhereIterator(IEnumerable<TSource> source, Func<TSource, TResult> selector)
+            {
+                foreach (var element in source)
+                {
+                    yield return selector.Invoke(element);
+                }
+            }
         }
 
         /// <summary>
@@ -49,7 +88,14 @@ namespace EnumerableExtensionsTask
         /// <exception cref="ArgumentNullException">Thrown when sequence or transformer is null.</exception>
         public static TSource[] ToArray<TSource>(this IEnumerable<TSource> source)
         {
-            throw new NotImplementedException();
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            var (buffer, count) = BufferData.ToArray(source);
+            Array.Resize(ref buffer, count);
+            return buffer;
         }
 
         /// <summary>
@@ -67,7 +113,25 @@ namespace EnumerableExtensionsTask
         /// </exception>
         public static bool All<T>(this IEnumerable<T> source, Func<T, bool> predicate)
         {
-            throw new NotImplementedException();
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            if (predicate is null)
+            {
+                throw new ArgumentNullException(nameof(predicate));
+            }
+
+            foreach (var element in source)
+            {
+                if (!predicate.Invoke(element))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -79,7 +143,21 @@ namespace EnumerableExtensionsTask
         /// <exception cref="System.ArgumentOutOfRangeException">count - Count can not be less than zero.</exception>
         public static IEnumerable<int> Range(int start, int count)
         {
-            throw new NotImplementedException();
+            if (count < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(count));
+            }
+
+            return RangeIterator(start, count);
+            static IEnumerable<int> RangeIterator(int start, int count)
+            {
+                int generated = 0;
+                while (generated != count)
+                {
+                    yield return start++;
+                    generated++;
+                }
+            }
         }
 
         /// <summary>
@@ -88,10 +166,21 @@ namespace EnumerableExtensionsTask
         /// <typeparam name="TSource">The type of the source.</typeparam>
         /// <param name="source">The source.</param>
         /// <returns>The number of elements in the input sequence.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when sequence or transformer is null.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when sequence is null.</exception>
         public static int Count<TSource>(this IEnumerable<TSource> source)
         {
-            throw new NotImplementedException();
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            int count = 0;
+            foreach (var element in source)
+            {
+                count++;
+            }
+
+            return count;
         }
         
         /// <summary>
@@ -108,7 +197,26 @@ namespace EnumerableExtensionsTask
         /// </exception>
         public static int Count<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
         {
-            throw new NotImplementedException();
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            if (predicate is null)
+            {
+                throw new ArgumentNullException(nameof(predicate));
+            }
+
+            int count = 0;
+            foreach (var element in source)
+            {
+                if (predicate.Invoke(element))
+                {
+                    count++;
+                }
+            }
+
+            return count;
         }
 
         /// <summary>
@@ -121,9 +229,20 @@ namespace EnumerableExtensionsTask
         /// <returns>An IOrderedEnumerable whose elements are sorted according to a key.</returns>
         public static IEnumerable<TSource> OrderBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> key)
         {
-            throw new NotImplementedException();
+            Comparer<TKey> comparer = Comparer<TKey>.Default;
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            if (key is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            return OrderBy(source, key, null);
         }
-        
+
         /// <summary>
         /// Sorts the elements of a sequence in ascending order according to a key.
         /// </summary>
@@ -140,7 +259,51 @@ namespace EnumerableExtensionsTask
         /// </exception>
         public static IEnumerable<TSource> OrderBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> key, IComparer<TKey> comparer)
         {
-            throw new NotImplementedException();
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            if (key is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            if (comparer is null)
+            {
+                comparer = Comparer<TKey>.Default;
+            }
+
+            return Sort(source, key, comparer);
+            static IEnumerable<TSource> Sort(IEnumerable<TSource> source, Func<TSource, TKey> key, IComparer<TKey> comparer)
+            {
+                List<TSource> list = new List<TSource>();
+                int count = 0;
+                foreach (var element in source)
+                {
+                    if (count == 0)
+                    {
+                        list.Add(element);
+                        count++;
+                        continue;
+                    }
+
+                    int j = count - 1;
+                    var checkedElement = element;
+                    while (j >= 0 && comparer.Compare(key.Invoke(list[j]), key.Invoke(checkedElement)) > 0)
+                    {
+                        j--;
+                    }
+
+                    list.Insert(j + 1, element);
+                    count++;
+                }
+
+                foreach (var element in list)
+                {
+                    yield return element;
+                }
+            }
         }
 
         /// <summary>
@@ -152,7 +315,23 @@ namespace EnumerableExtensionsTask
         /// <exception cref="ArgumentNullException">Thrown when sequence is null.</exception>
         public static IEnumerable<TResult> OfType<TResult>(this IEnumerable source)
         {
-            throw new NotImplementedException();
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            return OfTypeIterator(source);
+
+            static IEnumerable<TResult> OfTypeIterator(IEnumerable source)
+            {
+                foreach (var element in source)
+                {
+                    if (element is TResult result)
+                    {
+                        yield return result;
+                    }
+                }
+            }
         }
         
         /// <summary>
@@ -164,7 +343,27 @@ namespace EnumerableExtensionsTask
         /// <exception cref="ArgumentNullException">Thrown when sequence is null.</exception>
         public static IEnumerable<TResult> Cast<TResult>(this IEnumerable source)
         {
-            throw new NotImplementedException();
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            foreach (var element in source)
+            {
+                if (!(element is TResult casted || element is null))
+                {
+                    throw new InvalidCastException(nameof(element));
+                }
+            }
+
+            return OfTypeIterator(source);
+            static IEnumerable<TResult> OfTypeIterator(IEnumerable elements)
+            {
+                foreach (var element in elements)
+                {
+                    yield return (TResult)element;
+                }
+            }
         }
 
         /// <summary>
@@ -176,7 +375,27 @@ namespace EnumerableExtensionsTask
         /// <returns>Reversed source.</returns>
         public static IEnumerable<TSource> Reverse<TSource>(this IEnumerable<TSource> source)
         {
-            throw new NotImplementedException();
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            return ReverseIterator(source);
+            static IEnumerable<TSource> ReverseIterator(IEnumerable<TSource> source)
+            {
+                (TSource[] array, int count) = BufferData.ToArray(source);
+                Array.Resize(ref array, count);
+
+                if (count == 0)
+                {
+                    throw new ArgumentException("Source array cannot be empty");
+                }
+
+                for (int i = 0; i < count; i++)
+                {
+                    yield return array[count - 1 - i];
+                }
+            }
         }
 
         /// <summary>
@@ -185,6 +404,11 @@ namespace EnumerableExtensionsTask
         /// <typeparam name="T">The type of parameters.</typeparam>
         /// <param name="left">First object.</param>
         /// <param name="right">Second object.</param>
-        internal static void Swap<T>(ref T left, ref T right) => throw new NotImplementedException();
+        internal static void Swap<T>(ref T left, ref T right)
+        {
+            T buf = left;
+            left = right;
+            right = buf;
+        }
     }
 }

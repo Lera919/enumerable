@@ -17,7 +17,7 @@ namespace EnumerableExtensionsTask.Tests
         public IEnumerable<int> RangeTests(int start, int count) => EnumerableExtensions.Range(start, count);
 
         [Test]
-        public void Range_Source_Is_Null_Throw_ArgumentNullException() =>
+        public void Range_Source_InvalidCount_ArgumentOutOfRangeException() =>
             Assert.Throws<ArgumentOutOfRangeException>(() => EnumerableExtensions.Range(5, -5));
     }
 }

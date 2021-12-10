@@ -19,7 +19,34 @@ namespace EnumerableExtensionsTask
         /// <returns>Single dimension zero based array.</returns>
         internal static (T[] buffer, int count) ToArray<T>(IEnumerable<T> source)
         {
-            throw new NotImplementedException();
+            T[] buffer;
+            int count;
+            if (source is ICollection<T> sourceCollection)
+            {
+                count = sourceCollection.Count;
+                buffer = new T[count];
+                sourceCollection.CopyTo(buffer, 0);
+                return (buffer, count);
+            }
+
+            buffer = Array.Empty<T>();
+            count = 0;
+            foreach (T element in source)
+            {
+                if (buffer.Length == 0)
+                {
+                    Array.Resize(ref buffer, 4);
+                }
+
+                if (count == buffer.Length)
+                {
+                    Array.Resize(ref buffer, count * 2);
+                }
+
+                buffer[count++] = element;
+            }
+
+            return (buffer, count);
         }
     }
 }

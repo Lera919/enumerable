@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "0F5a4yeX7ue6nJb2Uvds6tJHo+WfJRMfDt+8LYqKJUbWFd4KxIqiekp/KHuGMsIBG4G9fU0lteflghD53C/C4g==",
+  "success": true,
+  "projectFilePath": "D:\\Epam\\enumerable-extensions\\EnumerableExtensionsTask\\EnumerableExtensionsTask.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Rog\\.nuget\\packages\\stylecop.analyzers\\1.1.118\\stylecop.analyzers.1.1.118.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -133,6 +133,25 @@ namespace EnumerableExtensionsTask.Tests
                         77777,
                     },
                     new Func<int, int>(item => item % 10));
+
+                yield return new TestCaseData(
+                   new List<int>
+                   {
+                        0,
+                        10,
+                        330,
+                        999,
+                        111,
+                   },
+                   new List<int>
+                   {
+                        10,
+                        0,
+                        111,
+                        999,
+                        330,
+                   },
+                   new Func<int, int>(item => Math.Abs(item - 10)));
             }
         }
 
@@ -141,8 +160,7 @@ namespace EnumerableExtensionsTask.Tests
             CollectionAssert.AreEqual(expected, source.OrderBy(key));
 
         [TestCaseSource(nameof(TestCasesDataForDoubles))]
-        public void OrderBy_Doubles(IEnumerable<double> source, IEnumerable<double> expected,
-            Func<double, double> key) =>
+        public void OrderBy_Doubles(IEnumerable<double> source, IEnumerable<double> expected, Func<double, double> key) =>
             CollectionAssert.AreEqual(expected, source.OrderBy(key));
 
         [TestCaseSource(nameof(TestCasesDataForIntegers))]
@@ -194,7 +212,8 @@ namespace EnumerableExtensionsTask.Tests
         [Test]
         public void OrderBy_Source_Is_Null_Throw_ArgumentNullException()
         {
-            Assert.Throws<ArgumentNullException>(() => ((IEnumerable<int>)null).OrderBy(x => x),
+            Assert.Throws<ArgumentNullException>(
+                () => ((IEnumerable<int>)null).OrderBy(x => x),
                 $"Source can not be null.");
         }
     }
