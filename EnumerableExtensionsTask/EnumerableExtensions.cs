@@ -276,29 +276,42 @@ namespace EnumerableExtensionsTask
             return Sort(source, key, comparer);
             static IEnumerable<TSource> Sort(IEnumerable<TSource> source, Func<TSource, TKey> key, IComparer<TKey> comparer)
             {
-                List<TSource> list = new List<TSource>();
+                TSource[] buffer = new TSource[0];
                 int count = 0;
                 foreach (var element in source)
                 {
                     if (count == 0)
                     {
-                        list.Add(element);
+                        Array.Resize(ref buffer, 4);
+                        buffer[0] = element;
                         count++;
                         continue;
                     }
 
                     int j = count - 1;
                     var checkedElement = element;
-                    while (j >= 0 && comparer.Compare(key.Invoke(list[j]), key.Invoke(checkedElement)) > 0)
+                    while (j >= 0 && comparer.Compare(key.Invoke(buffer[j]), key.Invoke(checkedElement)) > 0)
                     {
+                        if (buffer.Length <= count)
+                        {
+                            Array.Resize(ref buffer, count * 4);
+                        }
+
+                        buffer[j + 1] = buffer[j];
                         j--;
                     }
 
-                    list.Insert(j + 1, element);
+                    if (buffer.Length <= count)
+                    {
+                        Array.Resize(ref buffer, count * 4);
+                    }
+
+                    buffer[j + 1] = element;
                     count++;
                 }
 
-                foreach (var element in list)
+                Array.Resize(ref buffer, count);
+                foreach (var element in buffer)
                 {
                     yield return element;
                 }

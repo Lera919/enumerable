@@ -148,8 +148,8 @@ namespace EnumerableExtensionsTask.Tests
                         10,
                         0,
                         111,
-                        999,
                         330,
+                        999,
                    },
                    new Func<int, int>(item => Math.Abs(item - 10)));
             }
